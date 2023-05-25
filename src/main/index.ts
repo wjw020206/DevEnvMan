@@ -17,6 +17,9 @@ function createWindow(): void {
     }
   })
 
+  // 如果在开发模式则启动开发者工具
+  if (is.dev) mainWindow.webContents.toggleDevTools()
+
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })

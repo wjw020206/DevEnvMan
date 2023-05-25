@@ -1,97 +1,81 @@
-<script setup lang="ts">
-import Versions from './components/Versions.vue'
-</script>
-
 <template>
-  <Versions></Versions>
-
-  <svg class="hero-logo" viewBox="0 0 900 300">
-    <use xlink:href="./assets/icons.svg#electron" />
-  </svg>
-  <h2 class="hero-text">You've successfully created an Electron project with Vue and TypeScript</h2>
-  <p class="hero-tagline">Please try pressing <code>F12</code> to open the devTool</p>
-
-  <div class="links">
-    <div class="link-item">
-      <a target="_blank" href="https://evite.netlify.app">Documentation</a>
-    </div>
-    <div class="link-item link-dot">•</div>
-    <div class="link-item">
-      <a target="_blank" href="https://github.com/alex8088/electron-vite">Getting Help</a>
-    </div>
-    <div class="link-item link-dot">•</div>
-    <div class="link-item">
-      <a
-        target="_blank"
-        href="https://github.com/alex8088/quick-start/tree/master/packages/create-electron"
+  <div class="flex h-screen w-screen">
+    <!-- 左侧图标选项栏 -->
+    <div class="w-[250px] bg-[#f7f7f7]" :class="{ isCollapse: isCollapse }">
+      <!-- 折叠选项栏区域 -->
+      <div
+        class="h-[50px] w-[50px] flex justify-center items-center cursor-default hover:bg-[#dadadc]"
       >
-        create-electron
-      </a>
-    </div>
-  </div>
+        <!-- 汉堡图标 -->
+        <img
+          src="./assets/images/bars.png"
+          class="h-[24px] w-[24px]"
+          @click="isCollapse = !isCollapse"
+        />
+      </div>
 
-  <div class="features">
-    <div class="feature-item">
-      <article>
-        <h2 class="title">Configuring</h2>
-        <p class="detail">
-          Config with <span>electron.vite.config.ts</span> and refer to the
-          <a target="_blank" href="https://evite.netlify.app/config/">config guide</a>.
-        </p>
-      </article>
+      <!-- 选项列表 -->
+      <ul>
+        <li
+          v-for="(title, index) in options"
+          :key="index"
+          class="h-[50px] flex items-center cursor-default hover:bg-[#dedddf]"
+          :class="{ selected: currentSelect === title }"
+          @click="selectHandle(title)"
+        >
+          <!-- Logo -->
+          <div class="bg-white ml-[13px] border border-black">
+            <img :src="`src/assets/images/${title}Logo.png`" class="h-[24px] w-[24px]" />
+          </div>
+          <!-- 文字区域 -->
+          <span class="ml-[13px]">{{ title }}</span>
+        </li>
+      </ul>
     </div>
-    <div class="feature-item">
-      <article>
-        <h2 class="title">HMR</h2>
-        <p class="detail">
-          Edit <span>src/renderer</span> files to test HMR. See
-          <a target="_blank" href="https://evite.netlify.app/guide/hmr-in-renderer.html">docs</a>.
-        </p>
-      </article>
-    </div>
-    <div class="feature-item">
-      <article>
-        <h2 class="title">Hot Reloading</h2>
-        <p class="detail">
-          Run <span>'electron-vite dev --watch'</span> to enable. See
-          <a target="_blank" href="https://evite.netlify.app/guide/hot-reloading.html">docs</a>.
-        </p>
-      </article>
-    </div>
-    <div class="feature-item">
-      <article>
-        <h2 class="title">Debugging</h2>
-        <p class="detail">
-          Check out <span>.vscode/launch.json</span>. See
-          <a target="_blank" href="https://evite.netlify.app/guide/debugging.html">docs</a>.
-        </p>
-      </article>
-    </div>
-    <div class="feature-item">
-      <article>
-        <h2 class="title">Source Code Protection</h2>
-        <p class="detail">
-          Supported via built-in plugin <span>bytecodePlugin</span>. See
-          <a target="_blank" href="https://evite.netlify.app/guide/source-code-protection.html">
-            docs
-          </a>
-          .
-        </p>
-      </article>
-    </div>
-    <div class="feature-item">
-      <article>
-        <h2 class="title">Packaging</h2>
-        <p class="detail">
-          Use
-          <a target="_blank" href="https://www.electron.build">electron-builder</a>
-          and pre-configured to pack your app.
-        </p>
-      </article>
-    </div>
+    <!-- 右侧配置展示区 -->
+    <div class="bg-[#dedddf] flex-1"></div>
   </div>
 </template>
 
-<style lang="less">
-@import './assets/css/styles.less';
+<script setup lang="ts">
+import { ref } from 'vue'
+
+// 当前选中项
+const currentSelect = ref('Java')
+
+// 折叠状态
+const isCollapse = ref(false)
+
+// 选项列表
+const options = ['Java', 'Maven', 'MySQL', 'NodeJS', 'PHP']
+
+// 选中选项
+const selectHandle = (title: string): void => {
+  currentSelect.value = title
+}
+</script>
+
+<style scoped lang="less">
+// 选项选中时的样式
+.selected {
+  background-color: #dedddf;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: #0078d4;
+    height: 19px;
+    width: 3px;
+    margin-left: 4px;
+    border-radius: 10px;
+  }
+}
+
+// 折叠菜单时的样式
+.isCollapse {
+  width: 50px;
+  span {
+    display: none;
+  }
+}
 </style>
